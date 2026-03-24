@@ -6,9 +6,18 @@ import {
 } from "../../schemas/WeatherSchema";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import WeatherIcon from "../WeatherIcon";
-type Props = {};
 
-const CurrentWeather = (props: Props) => {
+const CurrentWeather = ({ coords }: BaseWeatherProps) => {
+  // const { data } = useQuery({
+  //   queryKey: [1],
+  //   queryFn: () =>
+  //     fetcher("onecall", {
+  //       lat: coords.lat,
+  //       lon: coords.lon,
+  //       exclude: "minutely,alerts",
+  //       units: "imperial",
+  //     }),
+  // });
   const fetchDummyData = async (): Promise<OpenWeatherMapResponse> => {
     const response = await fetch("/api/Weather");
     const data = await response.json();

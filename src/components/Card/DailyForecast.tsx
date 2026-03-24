@@ -7,13 +7,13 @@ import {
 import WeatherIcon from "../WeatherIcon";
 WeatherIcon;
 
-const DailyForecast = () => {
+const DailyForecast = ({ coords }: BaseWeatherProps) => {
   // const { data } = useQuery({
   //   queryKey: [1],
   //   queryFn: () =>
   //     fetcher("onecall", {
-  //       lat: 33.44,
-  //       lon: -94.04,
+  //       lat: coords.lat,
+  //       lon: coords.lon,
   //       exclude: "minutely,alerts",
   //       units: "imperial",
   //     }),
