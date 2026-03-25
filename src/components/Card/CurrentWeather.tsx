@@ -11,7 +11,7 @@ const CurrentWeather = ({ coords }: BaseWeatherProps) => {
   // const { data } = useQuery({
   //   queryKey: [1],
   //   queryFn: () =>
-  //     fetcher("onecall", {
+  //     fetcher("data/3.0/onecall", {
   //       lat: coords.lat,
   //       lon: coords.lon,
   //       exclude: "minutely,alerts",

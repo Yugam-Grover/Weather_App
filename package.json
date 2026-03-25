@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "json-server --watch dummy.json --port 8000"
+    "server": "json-server dummy.json --port 8000"
   },
   "dependencies": {
     "@base-ui/react": "^1.3.0",

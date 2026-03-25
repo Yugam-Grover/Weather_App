@@ -9,6 +9,9 @@ interface BaseWeatherProps {
   coords: Coords;
 }
 
+// interface GeoDataProps{
+//   coordinates: Coords;
+// }
 interface MapProps extends BaseWeatherProps {
   onMapClick: (newCoords: Coords) => void;
 }
