@@ -6,9 +6,17 @@ import {
 import Card from "./Card";
 import WeatherIcon from "../WeatherIcon";
 
-// type Props = {};
-
-const HourlyForecast = (/*props: Props*/) => {
+const HourlyForecast = ({ coords }: BaseWeatherProps) => {
+  // const { data } = useQuery({
+  //   queryKey: [1],
+  //   queryFn: () =>
+  //     fetcher("data/3.0/onecall", {
+  //       lat: coords.lat,
+  //       lon: coords.lon,
+  //       exclude: "minutely,alerts",
+  //       units: "imperial",
+  //     }),
+  // });
   const fetchDummyData = async (): Promise<OpenWeatherMapResponse> => {
     const response = await fetch("/api/Weather");
     const data = await response.json();

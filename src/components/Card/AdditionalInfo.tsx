@@ -16,9 +16,17 @@ import {
 } from "../../schemas/WeatherSchema";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
-type Props = {};
-
-const AdditionalInfo = (props: Props) => {
+const AdditionalInfo = ({ coords }: BaseWeatherProps) => {
+  // const { data } = useQuery({
+  //   queryKey: [1],
+  //   queryFn: () =>
+  //     fetcher("data/3.0/onecall", {
+  //       lat: coords.lat,
+  //       lon: coords.lon,
+  //       exclude: "minutely,alerts",
+  //       units: "imperial",
+  //     }),
+  // });
   const fetchDummyData = async (): Promise<OpenWeatherMapResponse> => {
     const response = await fetch("/api/Weather");
     const data = await response.json();
@@ -92,7 +100,7 @@ const AdditionalInfo = (props: Props) => {
       title="Additional Weather Info"
       childrenClassName="flex flex-col gap-3">
       {rows.map(({ label, value, Icon }) => (
-        <div className="flex justify-between">
+        <div key={value} className="flex justify-between">
           <div className="flex gap-6">
             <span className="text-gray-500">{label}</span>
             <Icon />
