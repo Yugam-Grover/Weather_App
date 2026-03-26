@@ -205,8 +205,42 @@
     @apply font-sans;
   }
 }
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
 
+@layer utilities {
+  @keyframes reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(15px) scale(0.96);
+      filter: blur(8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+  }
+
+  /* The "Apple" style easing: fast start, very smooth finish */
+  .animate-reveal {
+    animation: reveal 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Helper to prevent the "flicker" before animation starts */
+  .prepare-reveal {
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+}
 /* 
+
 @import "tailwindcss";
 
 :root {

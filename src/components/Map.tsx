@@ -5,6 +5,7 @@ import type { LatLngBoundsExpression, LeafletMouseEvent } from "leaflet";
 import { MapStyle, MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
+const MAPTILER_API_KEY = import.meta.env.MAPTILER_API_KEY;
 const Map = ({ coords, onMapClick, mapType }: MapProps) => {
   const worldBounds: LatLngBoundsExpression = [
     [-90, -180], // Bottom-Left (South Pole / Date Line)
@@ -53,7 +54,7 @@ function MapTilerLayering() {
   useEffect(() => {
     const mapTiler = new MaptilerLayer({
       style: MapStyle.BACKDROP.DARK,
-      apiKey: "sCyeXl3ssIenwNHNTsbI",
+      apiKey: MAPTILER_API_KEY,
     });
     mapTiler.addTo(map);
     return () => {

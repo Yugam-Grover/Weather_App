@@ -1,4 +1,3 @@
-import React from "react";
 import Card from "./Card";
 import {
   ArrowUp,
@@ -8,7 +7,6 @@ import {
   Sunrise,
   Sunset,
   Wind,
-  WindArrowDown,
 } from "lucide-react";
 import {
   openWeatherMapResponseSchema,
@@ -97,6 +95,7 @@ const AdditionalInfo = ({ coords }: BaseWeatherProps) => {
   };
   return (
     <Card
+      delay={300}
       title="Additional Weather Info"
       childrenClassName="flex flex-col gap-3">
       {rows.map(({ label, value, Icon }) => (

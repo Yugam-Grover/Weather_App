@@ -30,6 +30,7 @@ const HourlyForecast = ({ coords }: BaseWeatherProps) => {
 
   return (
     <Card
+      delay={100}
       title="Hourly Forecast (48 hours)"
       childrenClassName="flex gap-8 overflow-x-scroll pb-3">
       {WeatherData?.hourly.map((hour) => (

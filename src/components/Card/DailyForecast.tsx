@@ -30,7 +30,10 @@ const DailyForecast = ({ coords }: BaseWeatherProps) => {
   });
 
   return (
-    <Card title="Daily Forecast" childrenClassName="flex flex-col gap-2">
+    <Card
+      delay={200}
+      title="Daily Forecast"
+      childrenClassName="flex flex-col gap-2">
       {WeatherData?.daily.map((data) => (
         <div key={data.dt} className="flex justify-between">
           <p className="w-9">
