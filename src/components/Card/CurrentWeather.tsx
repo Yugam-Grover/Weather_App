@@ -31,6 +31,7 @@ const CurrentWeather = ({ coords }: BaseWeatherProps) => {
 
   return (
     <Card
+      delay={0}
       title="Current Weather"
       childrenClassName="flex flex-col items-center gap-7">
       <div className="flex flex-col items-center">
