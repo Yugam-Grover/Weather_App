@@ -14,4 +14,5 @@ interface BaseWeatherProps {
 // }
 interface MapProps extends BaseWeatherProps {
   onMapClick: (newCoords: Coords) => void;
+  mapType: string;
 }

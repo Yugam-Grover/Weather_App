@@ -8,6 +8,8 @@ import LocationDropdown from "./components/dropdowns/LocationDropdown";
 import { useQuery } from "@tanstack/react-query";
 import { fetcher } from "./api";
 import { geoDataSchema } from "./schemas/GeoDataSchema";
+import MapTypeDropdown from "./components/dropdowns/MapTypeDropdown";
+import MapLegend from "./components/MapLegend";
 
 // type props={
 //   location: string,
@@ -15,10 +17,11 @@ import { geoDataSchema } from "./schemas/GeoDataSchema";
 // }
 function App() {
   let [coordinates, setCoords] = useState<Coords>({
-    lat: 55,
-    lon: -0.125,
+    lat: 51.5074,
+    lon: -0.1278,
   });
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("london");
+  const [mapType, setMapType] = useState("clouds_new");
 
   const onMapClick = (newCoords: Coords) => {
     setCoords(newCoords);
@@ -45,8 +48,14 @@ function App() {
 
   return (
     <div className=" flex flex-col gap-4">
-      <LocationDropdown location={location} setLocation={setLocation} />
-      <Map coords={coords} onMapClick={onMapClick} />
+      <div className="flex gap-8">
+        <LocationDropdown location={location} setLocation={setLocation} />
+        <MapTypeDropdown MapType={mapType} setMapType={setMapType} />
+      </div>
+      <div className="relative">
+        <MapLegend mapType={mapType} />
+        <Map coords={coords} onMapClick={onMapClick} mapType={mapType} />
+      </div>
       <CurrentWeather coords={coords} />
       <HourlyForecast coords={coords} />
       <DailyForecast coords={coords} />
