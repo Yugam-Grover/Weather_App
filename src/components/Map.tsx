@@ -5,7 +5,7 @@ import type { LatLngBoundsExpression, LeafletMouseEvent } from "leaflet";
 import { MapStyle, MaptilerLayer } from "@maptiler/leaflet-maptilersdk";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
-const MAPTILER_API_KEY = import.meta.env.MAPTILER_API_KEY;
+const MAPTILER_API_KEY = import.meta.env.VITE_MAPTILER_API_KEY;
 const Map = ({ coords, onMapClick, mapType }: MapProps) => {
   const worldBounds: LatLngBoundsExpression = [
     [-90, -180], // Bottom-Left (South Pole / Date Line)
@@ -19,12 +19,11 @@ const Map = ({ coords, onMapClick, mapType }: MapProps) => {
       maxBounds={worldBounds}
       maxBoundsViscosity={1.0}
       minZoom={3}
-      className="w-full h-125 z-0 rounded-2xl">
+      className="w-full h-125 rounded-2xl">
       <MapCheck coords={coords} onMapClick={onMapClick} />
       <MapTilerLayering />
       <TileLayer
         opacity={0.6}
-        zoomOffset={-1}
         url={`https://tile.openweathermap.org/map/${mapType}/{z}/{x}/{y}.png?appid=${API_KEY}`}
       />
       <Marker position={[coords.lat, coords.lon]} />
@@ -39,7 +38,7 @@ function MapCheck({ coords, onMapClick }: Omit<MapProps, "mapType">) {
       const { lat, lng: lon } = e.latlng;
       onMapClick({ lat, lon });
     };
-    map.panTo([coords.lat, coords.lon], { animate: true, duration: 1 });
+    map.panTo([coords.lat, coords.lon], { animate: true, duration: 0.7 });
     map.on("click", handleClick);
     return () => {
       map.off("click", handleClick);
