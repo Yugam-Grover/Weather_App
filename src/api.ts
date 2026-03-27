@@ -1,8 +1,4 @@
 import qs from "query-string";
-import {
-  type OpenWeatherMapResponse,
-  openWeatherMapResponseSchema,
-} from "./schemas/WeatherSchema";
 
 import type { ZodType } from "zod";
 

@@ -27,8 +27,8 @@ const MapTypeDropdown = ({ MapType, setMapType }: Props) => {
       </SelectTrigger>
       <SelectContent>
         {mapTypeArray.map((layer) => (
-          <SelectItem key={layer} value={layer}>
-            {layer}
+          <SelectItem key={layer} value={layer} className="capitalize">
+            {layer.split("_")[0]}
           </SelectItem>
         ))}
       </SelectContent>
