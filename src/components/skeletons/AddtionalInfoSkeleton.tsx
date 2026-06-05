@@ -6,7 +6,8 @@ const AddtionalInfoSkeleton = () => {
     <Card
       animate={false}
       title="Additional Weather Info"
-      childrenClassName="flex flex-col gap-3">
+      className="bg-white/5 backdrop-blur-md border border-white/10 shadow-xl"
+      childrenClassName="grid grid-cols-1 md:grid-cols-2 gap-5">
       {Array.from({ length: 6 }).map((_, index) => (
         <div key={index} className="flex justify-between">
           <div className="flex gap-6">

@@ -2,7 +2,6 @@ import { type Dispatch, type SetStateAction } from "react";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -28,10 +27,10 @@ const LocationDropdown = ({ location, setLocation }: Props) => {
     <Select
       value={location}
       onValueChange={(value) => setLocation(value || location)}>
-      <SelectTrigger className="w-45">
-        <SelectValue placeholder="Theme" />
+      <SelectTrigger aria-label="Select location" className="w-full xs:w-45">
+        <SelectValue placeholder="Custom" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent alignItemWithTrigger={false}>
         {locationsArray.map((city) => (
           <SelectItem key={city} value={city}>
             {city}

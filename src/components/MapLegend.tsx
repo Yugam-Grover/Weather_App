@@ -1,25 +1,32 @@
-import React from "react";
-
 type Props = {
   mapType: string;
 };
 
 const MapLegend = ({ mapType }: Props) => {
+  if (mapType === "none") return null;
   const data = WEATHER_LEGENDS[mapType];
   const maxValue = data.stops[data.stops.length - 1].value;
   const stopGradient = data.stops
-    .map((stop) => `${stop.color} ${(stop.value / maxValue) * 100}%`)
+    .map(
+      (stop, index) =>
+        `${stop.color} ${(index / (data.stops.length - 1)) * 100}%`,
+    )
     .join(", ");
+
   return (
-    <div className="absolute top-4 right-4 w-95 z-1000 rounded-xl shadow-lg bg-background/50 p-4 border border-accent/70 flex flex-col gap-4">
-      <h3 className="text-md font-semibold">{data.title}</h3>
+    <div className="absolute top-4 right-4 w-48 xs:w-95 z-1000 rounded-xl shadow-lg bg-white/70 dark:bg-background/50 backdrop-blur-md p-4 border border-slate-200 dark:border-accent/70 flex flex-col gap-4">
+      <h3 className="text-foreground dark:text-[#ffffff] text-md font-semibold">
+        {data.title}
+      </h3>
       <div
-        className="w-full h-5 rounded-xl border border-accent/70"
+        className={`w-full h-5 rounded-xl border border-accent/70 ${
+          mapType === "clouds_new" ? "dark:invert-0 invert" : ""
+        }`}
         style={{
           background: `linear-gradient(to right, ${stopGradient})`,
         }}
       />
-      <div className="flex justify-between text-xs">
+      <div className="flex justify-between text-foreground dark:text-[#ffffff] text-xs font-medium">
         <span>
           {data.stops[0].value}
           {data.unit}
@@ -38,7 +45,7 @@ export default MapLegend;
 interface LegendStop {
   value: number;
   color: string;
-  label?: string; // Optional: if you want a specific word like "Freezing"
+  label?: string;
 }
 
 interface WeatherLegend {
@@ -72,9 +79,10 @@ const WEATHER_LEGENDS: WeatherLegendRecord = {
     type: "stepped",
     stops: [
       { value: 0, color: "rgba(225, 200, 100, 0)" },
-      { value: 1, color: "rgba(110, 110, 205, 0.3)" },
-      { value: 10, color: "rgba(80, 80, 225, 0.7)" },
-      { value: 140, color: "rgba(20, 20, 255, 0.9)" },
+      { value: 0.5, color: "rgba(120, 200, 80, 0.4)" },
+      { value: 1, color: "rgba(40, 200, 40, 0.6)" },
+      { value: 10, color: "rgba(255, 255, 0, 0.9)" },
+      { value: 140, color: "rgba(255, 0, 0, 1)" },
     ],
   },
   clouds_new: {
@@ -103,9 +111,11 @@ const WEATHER_LEGENDS: WeatherLegendRecord = {
     type: "stepped",
     stops: [
       { value: 1, color: "rgba(255, 255, 255, 0)" },
-      { value: 15, color: "rgba(179, 100, 188, 0.7)" },
-      { value: 50, color: "rgba(116, 76, 172, 0.9)" },
-      { value: 200, color: "rgba(13, 17, 38, 1)" },
+      { value: 5, color: "rgba(0, 200, 255, 0.4)" },
+      { value: 15, color: "rgba(0, 100, 255, 0.7)" },
+      { value: 25, color: "rgba(130, 0, 220, 0.8)" },
+      { value: 50, color: "rgba(80, 0, 150, 0.9)" },
+      { value: 200, color: "rgba(20, 0, 60, 1)" },
     ],
   },
 };

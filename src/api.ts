@@ -20,7 +20,6 @@ export async function fetcher<T>(
       appId: API_KEY,
     },
   });
-  console.log(url);
   const response = await fetch(url);
   if (!response.ok) {
     const errorBody = await response.json().catch(() => {});
@@ -29,6 +28,5 @@ export async function fetcher<T>(
     );
   }
   const data = await response.json();
-
   return schema.parse(data);
 }

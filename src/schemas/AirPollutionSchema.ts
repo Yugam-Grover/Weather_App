@@ -7,23 +7,22 @@ export const AirPollutionSchema = z.object({
   }),
   list: z.array(
     z.object({
-      dt: z.number(), // Unix timestamp
+      dt: z.number(),
       main: z.object({
-        aqi: z.number().min(1).max(5), // 1=Good, 5=Very Poor
+        aqi: z.number().min(1).max(5),
       }),
       components: z.object({
-        co: z.number(), // Carbon monoxide (μg/m3)
-        no: z.number(), // Nitrogen monoxide (μg/m3)
-        no2: z.number(), // Nitrogen dioxide (μg/m3)
-        o3: z.number(), // Ozone (μg/m3)
-        so2: z.number(), // Sulphur dioxide (μg/m3)
-        pm2_5: z.number(), // PM2.5 (μg/m3)
-        pm10: z.number(), // PM10 (μg/m3)
-        nh3: z.number(), // Ammonia (μg/m3)
+        co: z.number(),
+        no: z.number(),
+        no2: z.number(),
+        o3: z.number(),
+        so2: z.number(),
+        pm2_5: z.number(),
+        pm10: z.number(),
+        nh3: z.number(),
       }),
     }),
   ),
 });
 
-// Infer the TypeScript type from the schema
 export type AirPollutionData = z.infer<typeof AirPollutionSchema>;

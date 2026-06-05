@@ -1,13 +1,12 @@
 import Card from "../Card/Card";
 import { Skeleton } from "../ui/skeleton";
 
-type Props = {};
-
-const AddtionalInfoSkeleton = (props: Props) => {
+const AddtionalInfoSkeleton = () => {
   return (
     <Card
       animate={false}
       title="Current Weather"
+      className="bg-white/5 backdrop-blur-md border border-white/10 shadow-xl"
       childrenClassName="flex flex-col items-center gap-7">
       <div className="flex flex-col items-center">
         <Skeleton className="w-30 h-15" />

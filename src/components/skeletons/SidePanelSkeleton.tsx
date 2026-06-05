@@ -1,49 +1,56 @@
-import React from "react";
 import { Skeleton } from "../ui/skeleton";
 import Card from "../Card/Card";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { Info } from "lucide-react";
 
-type Props = {};
-
-const SidePanelSkeleton = (props: Props) => {
+const SidePanelSkeleton = () => {
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-sm font-semibold">Air Pollution</h1>
-      <Skeleton className="w-8 h-10" />
-      <div className="flex gap-2">
-        <h3 className="text-sm font-semibold">AQI</h3>
+      <div className="flex items-center gap-2">
+        <h1 className="text-sm font-semibold text-gray-300">Air Pollution</h1>
         <Tooltip>
-          <TooltipTrigger className="p-1 -m-1 cursor-help pointer-events-auto">
-            <Info className="size-4" />
+          <TooltipTrigger className="cursor-help pointer-events-auto">
+            <Info className="size-4 text-gray-400" />
           </TooltipTrigger>
-          <TooltipContent className="">
+          <TooltipContent>
             <p className="w-xs">
-              Air Quality Index. Possible values: 1, 2, 3, 4, 5. Where 1 = Good,
-              2 = Fair, 3 = Moderate, 4 = Poor, 5 = Very Poor.
+              US EPA Air Quality Index. Values range from 0 to 500. Where 0-50 =
+              Good, 51-100 = Moderate, 101-150 = Unhealthy for Sensitive Groups,
+              151-200 = Unhealthy, 201-300 = Very Unhealthy, 301-500 =
+              Hazardous.
             </p>
           </TooltipContent>
         </Tooltip>
       </div>
+
+      <div className="flex items-center gap-4 py-2">
+        <Skeleton className="min-w-18 h-16 rounded-xl" />
+        <Skeleton className="h-7 w-32 rounded-md" />
+      </div>
+
       {Array.from({ length: 8 }).map((_, index) => (
         <Card
           key={index}
           animate={false}
-          childrenClassName="flex flex-col gap-3"
-          className="gap-0! hover:scale-105 transition-transform duration-300">
-          <div className="flex justify-between">
-            <Skeleton className="w-14 h-5" />
-            <Skeleton className="w-9 h-5" />
+          childrenClassName="flex flex-col gap-1"
+          className="bg-white/60 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-xl rounded-2xl p-4">
+          <div className="flex justify-between items-center mb-2">
+            <div className="flex items-center gap-1">
+              <Skeleton className="w-12 h-6" />
+              <Info className="size-3.5 text-muted-foreground opacity-30" />
+            </div>
+            <Skeleton className="w-10 h-8" />
           </div>
-          <Skeleton className="w-63 h-2" />
-          <div className="flex justify-between text-xs">
-            <Skeleton className="w-4 h-4" />
-            <Skeleton className="w-6 h-4" />
+
+          <div className="flex justify-start w-full my-1">
+            <Skeleton className="w-full h-7 rounded-full" />
           </div>
-          <div className="flex justify-between">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <Skeleton key={index} className="w-10 h-6" />
-            ))}
+
+          <Skeleton className="w-full h-2 mt-2 mb-1" />
+
+          <div className="flex justify-between mt-1">
+            <Skeleton className="w-4 h-3" />
+            <Skeleton className="w-8 h-3" />
           </div>
         </Card>
       ))}

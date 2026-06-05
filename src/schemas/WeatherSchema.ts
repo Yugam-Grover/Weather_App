@@ -108,8 +108,6 @@ export const openWeatherMapResponseSchema = z.object({
   daily: z.array(dailyWeatherSchema),
 });
 
-// export const openWeatherMapArraySchema = z.array(openWeatherMapResponseSchema);
-
 export type OpenWeatherMapResponse = z.infer<
   typeof openWeatherMapResponseSchema
 >;
