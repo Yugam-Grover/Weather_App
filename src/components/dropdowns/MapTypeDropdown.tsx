@@ -12,6 +12,7 @@ type Props = {
 };
 const MapTypeDropdown = ({ MapType, setMapType }: Props) => {
   const mapTypeArray = [
+    "none",
     "clouds_new",
     "precipitation_new",
     "pressure_new",
@@ -22,10 +23,10 @@ const MapTypeDropdown = ({ MapType, setMapType }: Props) => {
     <Select
       value={MapType}
       onValueChange={(value) => setMapType(value || MapType)}>
-      <SelectTrigger className="w-45">
-        <SelectValue placeholder="Theme" />
+      <SelectTrigger aria-label="Select map Layer" className="w-full xs:w-45">
+        <SelectValue>{MapType.split("_")[0]}</SelectValue>
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent alignItemWithTrigger={false}>
         {mapTypeArray.map((layer) => (
           <SelectItem key={layer} value={layer} className="capitalize">
             {layer.split("_")[0]}

@@ -1,12 +1,16 @@
+import { lazy } from "react";
+import { Suspense, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { Menu } from "lucide-react";
+import { ErrorBoundary } from "react-error-boundary";
+
+import { fetcher } from "./api";
+
 import DailyForecast from "./components/Card/DailyForecast";
 import HourlyForecast from "./components/Card/HourlyForecast";
 import CurrentWeather from "./components/Card/CurrentWeather";
 import AdditionalInfo from "./components/Card/AdditionalInfo";
-import Map from "./components/Map";
-import { Suspense, useState, type Dispatch, type SetStateAction } from "react";
 import LocationDropdown from "./components/dropdowns/LocationDropdown";
-import { useQuery } from "@tanstack/react-query";
-import { fetcher } from "./api";
 import { geoDataSchema } from "./schemas/GeoDataSchema";
 import MapTypeDropdown from "./components/dropdowns/MapTypeDropdown";
 import MapLegend from "./components/MapLegend";
@@ -15,25 +19,25 @@ import CurrentSkeleton from "./components/skeletons/CurrentSkeleton";
 import DailySkeleton from "./components/skeletons/DailySkeleton";
 import HourlySkeleton from "./components/skeletons/HourlySkeleton";
 import SidePanel from "./components/SidePanel";
-import { Menu } from "lucide-react";
-// type props={
-//   location: string,
-//   setLocation: Dispatch<SetStateAction<string>>
-// }
+import MobileHeader from "./components/MobileHeader";
+import DarkLightToggle from "./components/DarkLightToggle";
+import Card from "./components/Card/Card";
+const Map = lazy(() => import("./components/Map"));
+
 function App() {
-  let [coordinates, setCoords] = useState<Coords>({
+  const [coordinates, setCoords] = useState<Coords>({
     lat: 51.5074,
     lon: -0.1278,
   });
-  const [location, setLocation] = useState("london");
-  const [mapType, setMapType] = useState("clouds_new");
+  const [location, setLocation] = useState("London");
+  const [mapType, setMapType] = useState("none");
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
 
   const onMapClick = (newCoords: Coords) => {
     setCoords(newCoords);
     setLocation("Custom");
   };
-  const { data: geoCodeData } = useQuery({
+  const { data: geoCodeData, isLoading } = useQuery({
     queryKey: ["geocode", location],
     queryFn: () =>
       fetcher(
@@ -54,42 +58,102 @@ function App() {
 
   return (
     <>
-      <div className=" flex flex-col gap-4 p-6 w-full lg:w-[calc(100vw-var(--sidebar-width))]">
-        <div className="flex gap-8">
-          <div className="flex gap-2">
+      <MobileHeader setSidePanelOpen={setSidePanelOpen} />
+      <div className=" flex flex-col gap-4 p-6 w-full lg:w-[calc(100vw-var(--sidebar-width))] 2xl:h-screen 2xl:min-h-300 overflow-x-hidden">
+        <div className="flex flex-col gap-3 pb-4 xs:flex-row xs:gap-8 last:align-bottom">
+          <div className="flex flex-col gap-2 md:flex-row md:gap-4">
             <h2 className="p-1.5">Location:</h2>
             <LocationDropdown location={location} setLocation={setLocation} />
           </div>
-          <div className="flex gap-2">
-            <h2 className="p-1.5">Map Type:</h2>
+          <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+            <h2 className="p-1.5 whitespace-nowrap">Map Type:</h2>
             <MapTypeDropdown MapType={mapType} setMapType={setMapType} />
           </div>
-
-          <button
-            className="hover:cursor-pointer lg:hidden"
-            onClick={() => setSidePanelOpen(true)}>
-            <Menu className="size-5 " />
-          </button>
+          <div className="flex gap-6 ml-auto mr-5 items-center">
+            <div className="hidden xs:block">
+              <DarkLightToggle />
+            </div>
+            <button
+              aria-label="Open mobile menu"
+              className="hidden xs:block hover:cursor-pointer lg:hidden"
+              onClick={() => setSidePanelOpen(true)}>
+              <Menu className="size-5" />
+            </button>
+          </div>
         </div>
-        <div className="relative z-0">
-          <MapLegend mapType={mapType} />
-          <Map coords={coords} onMapClick={onMapClick} mapType={mapType} />
-        </div>
-        <Suspense fallback={<CurrentSkeleton />}>
-          <CurrentWeather coords={coords} />
-        </Suspense>
+        {isLoading ? (
+          <div className="flex flex-1 items-center justify-center text-xl text-gray-400 font-semibold h-full">
+            Loading location data...
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-4 2xl:grid-rows-4 2xl:flex-1 2xl:min-h-0">
+            <div className="relative z-0 md:col-span-2 2xl:col-span-4 2xl:row-span-2 h-125 2xl:h-auto order-1">
+              <MapLegend mapType={mapType} />
+              <Suspense
+                fallback={
+                  <div className="w-full h-full bg-white/5 rounded-2xl animate-pulse" />
+                }>
+                <Map
+                  coords={coords}
+                  onMapClick={onMapClick}
+                  mapType={mapType}
+                />
+              </Suspense>
+            </div>
 
-        <Suspense fallback={<HourlySkeleton />}>
-          <HourlyForecast coords={coords} />
-        </Suspense>
+            <div className="col-span-1 order-2 2xl:row-span-2">
+              <ErrorBoundary
+                fallback={
+                  <Card className="flex items-center justify-center text-red-500/80 bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                    <p className="font-medium">Failed to load data.</p>
+                  </Card>
+                }>
+                <Suspense fallback={<CurrentSkeleton />}>
+                  <CurrentWeather coords={coords} />
+                </Suspense>
+              </ErrorBoundary>
+            </div>
 
-        <Suspense fallback={<DailySkeleton />}>
-          <DailyForecast coords={coords} />
-        </Suspense>
+            <div className="col-span-1 order-3 2xl:order-4 2xl:row-span-2">
+              <ErrorBoundary
+                fallback={
+                  <Card className="flex items-center justify-center text-red-500/80 bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                    <p className="font-medium">Failed to load data.</p>
+                  </Card>
+                }>
+                <Suspense fallback={<DailySkeleton />}>
+                  <DailyForecast coords={coords} />
+                </Suspense>
+              </ErrorBoundary>
+            </div>
 
-        <Suspense fallback={<AddtionalInfoSkeleton />}>
-          <AdditionalInfo coords={coords} />
-        </Suspense>
+            <div className="col-span-1 md:col-span-2 order-4 2xl:order-3 2xl:row-span-1">
+              <ErrorBoundary
+                fallback={
+                  <Card className="flex items-center justify-center text-red-500/80 bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                    <p className="font-medium">Failed to load data.</p>
+                  </Card>
+                }>
+                <Suspense fallback={<HourlySkeleton />}>
+                  <HourlyForecast coords={coords} />
+                </Suspense>
+              </ErrorBoundary>
+            </div>
+
+            <div className="col-span-1 md:col-span-2 order-5 2xl:row-span-1">
+              <ErrorBoundary
+                fallback={
+                  <Card className="flex items-center justify-center text-red-500/80 bg-white/60 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                    <p className="font-medium">Failed to load data.</p>
+                  </Card>
+                }>
+                <Suspense fallback={<AddtionalInfoSkeleton />}>
+                  <AdditionalInfo coords={coords} />
+                </Suspense>
+              </ErrorBoundary>
+            </div>
+          </div>
+        )}
       </div>
       <SidePanel
         coords={coords}

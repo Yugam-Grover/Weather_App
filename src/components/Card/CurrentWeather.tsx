@@ -1,4 +1,3 @@
-import React from "react";
 import Card from "./Card";
 import {
   type OpenWeatherMapResponse,
@@ -6,39 +5,38 @@ import {
 } from "../../schemas/WeatherSchema";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import WeatherIcon from "../WeatherIcon";
+import { fetcher } from "@/api";
 
 const CurrentWeather = ({ coords }: BaseWeatherProps) => {
-  // const { data } = useQuery({
-  //   queryKey: [1],
-  //   queryFn: () =>
-  //     fetcher("data/3.0/onecall", {
-  //       lat: coords.lat,
-  //       lon: coords.lon,
-  //       exclude: "minutely,alerts",
-  //       units: "imperial",
-  //     }),
-  // });
-  const fetchDummyData = async (): Promise<OpenWeatherMapResponse> => {
-    const response = await fetch("/api/Weather");
-    const data = await response.json();
-    return openWeatherMapResponseSchema.parse(data);
-  };
-
   const { data: WeatherData } = useSuspenseQuery({
-    queryKey: ["Weather"],
-    queryFn: () => fetchDummyData(),
+    queryKey: ["realData", coords.lat, coords.lon],
+    queryFn: () =>
+      fetcher<OpenWeatherMapResponse>(
+        "data/3.0/onecall",
+        {
+          lat: coords.lat,
+          lon: coords.lon,
+          exclude: "minutely,alerts",
+          units: "metric",
+        },
+        openWeatherMapResponseSchema,
+      ),
   });
 
   return (
     <Card
       delay={0}
       title="Current Weather"
-      childrenClassName="flex flex-col items-center gap-7">
+      className="bg-white/60 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-xl"
+      childrenClassName="flex flex-col items-center gap-7 2xl:justify-between md:pb-7 md:mt-7">
       <div className="flex flex-col items-center">
         <h2 className="text-6xl font-semibold">
           {Math.round(WeatherData.current.temp)}°C
         </h2>
-        <WeatherIcon className="size-20 -mt-2" />
+        <WeatherIcon
+          src={WeatherData.current.weather[0].icon}
+          className="size-20 -mt-2"
+        />
         <p className="capitalize text-xl -mt-2">
           {WeatherData.current.weather[0].description}
         </p>
@@ -65,7 +63,7 @@ const CurrentWeather = ({ coords }: BaseWeatherProps) => {
         </div>
         <div className="flex flex-col items-center gap-2">
           <p className="text-gray-500">Wind Speed</p>
-          <p>{WeatherData.current.wind_speed}mph</p>
+          <p>{WeatherData.current.wind_speed} m/s</p>
         </div>
       </div>
     </Card>

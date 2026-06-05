@@ -1,13 +1,12 @@
 import Card from "../Card/Card";
 import { Skeleton } from "../ui/skeleton";
 
-type Props = {};
-
-const AddtionalInfoSkeleton = (props: Props) => {
+const AddtionalInfoSkeleton = () => {
   return (
     <Card
       animate={false}
       title="Daily Forecast"
+      className="bg-white/5 backdrop-blur-md border border-white/10 shadow-xl"
       childrenClassName="flex flex-col gap-2">
       {Array.from({ length: 8 }).map((_, index) => (
         <div key={index} className="flex justify-between">

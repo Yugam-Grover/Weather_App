@@ -9,7 +9,6 @@ const geoLocationSchema = z.object({
   state: z.string().optional(),
 });
 
-// The geocoding API returns an array of results
 export const geoDataSchema = z.array(geoLocationSchema);
 
 export type GeoLocation = z.infer<typeof geoLocationSchema>;

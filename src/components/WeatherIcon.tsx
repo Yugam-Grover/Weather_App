@@ -1,17 +1,16 @@
 import clsx from "clsx";
-import React from "react";
-import { he } from "zod/locales";
 
 type Props = {
   className?: string;
+  src: string;
 };
 
-const WeatherIcon = ({ className }: Props) => {
+const WeatherIcon = ({ className, src }: Props) => {
   return (
     <img
       className={clsx("size-10", className)}
-      src="https://openweathermap.org/payload/api/media/file/10d@2x.png"
-      alt="hourly weather"
+      src={`https://openweathermap.org/payload/api/media/file/${src}.png`}
+      alt="Weather Icon"
     />
   );
 };

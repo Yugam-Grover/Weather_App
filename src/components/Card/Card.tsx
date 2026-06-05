@@ -21,14 +21,14 @@ const Card = ({
   return (
     <div
       className={clsx(
-        "rounded-xl shadow-md p-5 flex flex-col gap-4 bg-[#1e1d2e]",
+        "rounded-xl shadow-md p-5 flex flex-col gap-4 bg-card h-full border dark:border-none",
         className,
       )}>
       <h2 className="text-2xl font-semibold">{title}</h2>
       <div
         className={clsx(
           childrenClassName,
-          animate && "animate-reveal prepare-reveal",
+          animate && "animate-reveal prepare-reveal flex-1",
         )}
         style={animate ? { animationDelay: `${delay}ms` } : {}}>
         {children}
