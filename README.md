@@ -12,8 +12,6 @@ Weather dashboard with an interactive Leaflet map, meteorological overlay layers
 |---|---|
 | ![Nimbus Dashboard](./assets/dashboard-preview.png) | ![Air Quality Panel](./assets/aqi-panel-preview.png) |
 
-> Add screenshots to an `assets/` directory in the repo root before publishing.
-
 ---
 
 ## Features
